@@ -1,0 +1,3 @@
+/Users/edvardschoyen/Documents/studie/4-semester/nettverksprogrammering/idatt2104-nettverksprogrammering/oblig-p1-nettverk/cmake-build-debug/CMakeFiles/oblig_p1_nettverk.dir
+/Users/edvardschoyen/Documents/studie/4-semester/nettverksprogrammering/idatt2104-nettverksprogrammering/oblig-p1-nettverk/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/edvardschoyen/Documents/studie/4-semester/nettverksprogrammering/idatt2104-nettverksprogrammering/oblig-p1-nettverk/cmake-build-debug/CMakeFiles/rebuild_cache.dir
