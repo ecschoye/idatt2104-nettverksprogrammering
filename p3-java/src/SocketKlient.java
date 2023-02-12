@@ -7,30 +7,37 @@ import java.util.Scanner;
 
 public class SocketKlient {
     public static void main(String[] args) throws IOException {
-        final int PORT_NR = 2502;
+        final int PORTNR = 1250;
 
-        Scanner leserFraKommandoVindu = new Scanner(System.in);
-        System.out.println("Oppgi navnet på maskinen der tjenerprogrammet kjører: ");
-        String tjenermaskinen = leserFraKommandoVindu.nextLine();
+        /* Bruker en scanner til � lese fra kommandovinduet */
+        Scanner leserFraKommandovindu = new Scanner(System.in);
+        System.out.print("Oppgi navnet p� maskinen der tjenerprogrammet kj�rer: ");
+        String tjenermaskin = leserFraKommandovindu.nextLine();
 
-        Socket forbindelse = new Socket(tjenermaskinen, PORT_NR);
-        System.out.println("Nå er forbindelsen opprettet.");
+        /* Setter opp forbindelsen til tjenerprogrammet */
+        Socket forbindelse = new Socket(tjenermaskin, PORTNR);
+        System.out.println("N� er forbindelsen opprettet.");
 
-        InputStreamReader leseforbindelsen = new InputStreamReader(forbindelse.getInputStream());
-        BufferedReader leseren = new BufferedReader(leseforbindelsen);
-        PrintWriter skriveren = new PrintWriter(forbindelse.getOutputStream());
+        /* �pner en forbindelse for kommunikasjon med tjenerprogrammet */
+        InputStreamReader leseforbindelse = new InputStreamReader(forbindelse.getInputStream());
+        BufferedReader leseren = new BufferedReader(leseforbindelse);
+        PrintWriter skriveren = new PrintWriter(forbindelse.getOutputStream(), true);
 
+        /* Leser innledning fra tjeneren og skriver den til kommandovinduet */
         String innledning1 = leseren.readLine();
         String innledning2 = leseren.readLine();
         System.out.println(innledning1 + "\n" + innledning2);
 
-        String enlinje = leserFraKommandoVindu.nextLine();
-        while (!enlinje.equals("")) {
-            skriveren.println(enlinje);
-            String respons = leseren.readLine();
-            System.out.println("Fra tjenerprogrammet" + respons);
-            enlinje = leserFraKommandoVindu.nextLine();
+        /* Leser tekst fra kommandovinduet (brukeren) */
+        String enLinje = leserFraKommandovindu.nextLine();
+        while (!enLinje.equals("")) {
+            skriveren.println(enLinje);  // sender teksten til tjeneren
+            String respons = leseren.readLine();  // mottar respons fra tjeneren
+            System.out.println("Fra tjenerprogrammet: " + respons);
+            enLinje = leserFraKommandovindu.nextLine();
         }
+
+        /* Lukker forbindelsen */
         leseren.close();
         skriveren.close();
         forbindelse.close();

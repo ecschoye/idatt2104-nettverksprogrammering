@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class SocketTjener {
     public static void main(String[] args) throws IOException {
-        final int PORTNR = 2502;
+        final int PORTNR = 1250;
         ServerSocket tjener = new ServerSocket(PORTNR);
         System.out.println("Logg for tjenersiden. Nå venter vi...");
         Socket forbindelse = tjener.accept();
