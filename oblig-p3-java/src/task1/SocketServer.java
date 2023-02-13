@@ -33,19 +33,15 @@ public class SocketServer implements Runnable{
                 String number2 = reader.readLine();
                 writer.println("Number 2: " + number2);
 
-                int number1Int = Integer.parseInt(number1);
-                int number2Int = Integer.parseInt(number2);
-                int answer = 0;
+                int result;
 
                 if (operator.equals("+")) {
-                    answer = number1Int + number2Int;
-                } else if (operator.equals("-")) {
-                    answer = number1Int - number2Int;
+                    result = Integer.parseInt(number1) + Integer.parseInt(number2);
+                    writer.println("Answer: " + result);
                 } else {
-                    writer.println("Operator is not valid");
+                    result = Integer.parseInt(number1) - Integer.parseInt(number2);
+                    writer.println("Answer: " + result);
                 }
-
-                writer.println("Answer: " + answer);
 
                 if (reader.readLine().equals("n")) {
                     System.out.println("The client has terminated the connection");

@@ -28,33 +28,36 @@ public class SocketClient {
         while (true) {
             System.out.println("Enter operator (+, -): ");
             String operator = readerFromCommandLine.nextLine();
+            while (!operator.equals("+") && !operator.equals("-")) {
+                System.out.println("Operator is not valid. Try again.");
+                System.out.println("Enter operator (+, -): ");
+                operator = readerFromCommandLine.nextLine();
+            }
             writer.println(operator);
+            System.out.println(operator);
             System.out.println(reader.readLine());
 
             System.out.println("Enter number 1: ");
             String number1 = readerFromCommandLine.nextLine();
             writer.println(number1);
+            System.out.println(number1);
             System.out.println(reader.readLine());
 
             System.out.println("Enter number 2: ");
             String number2 = readerFromCommandLine.nextLine();
             writer.println(number2);
+            System.out.println(number2);
             System.out.println(reader.readLine());
 
-            int number1Int = Integer.parseInt(number1);
-            int number2Int = Integer.parseInt(number2);
-
-            int result = 0;
-            switch (operator) {
-                case "+" -> result = number1Int + number2Int;
-                case "-" -> result = number1Int - number2Int;
-                default -> System.out.println("Invalid operator");
-            }
-            System.out.println("Result: " + result);
+            System.out.println("---");
+            System.out.println(reader.readLine());
 
             System.out.println("Do you want to continue? (y/n): ");
             String response = readerFromCommandLine.nextLine();
-            if (response.toLowerCase().equals("n")) {
+            writer.println(response);
+            System.out.println(response);
+            System.out.println(response);
+            if (response.equalsIgnoreCase("n")) {
                 break;
             }
         }
