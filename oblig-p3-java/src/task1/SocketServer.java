@@ -35,11 +35,14 @@ public class SocketServer implements Runnable{
 
                 int result;
 
+                int number1Int = Integer.parseInt(number1);
+                int number2Int = Integer.parseInt(number2);
+
                 if (operator.equals("+")) {
-                    result = Integer.parseInt(number1) + Integer.parseInt(number2);
+                    result = number1Int + number2Int;
                     writer.println("Answer: " + result);
                 } else {
-                    result = Integer.parseInt(number1) - Integer.parseInt(number2);
+                    result = number1Int - number2Int;
                     writer.println("Answer: " + result);
                 }
 

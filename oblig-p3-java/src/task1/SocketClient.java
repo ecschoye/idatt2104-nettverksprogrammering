@@ -34,19 +34,17 @@ public class SocketClient {
                 operator = readerFromCommandLine.nextLine();
             }
             writer.println(operator);
-            System.out.println(operator);
+
             System.out.println(reader.readLine());
 
             System.out.println("Enter number 1: ");
             String number1 = readerFromCommandLine.nextLine();
             writer.println(number1);
-            System.out.println(number1);
             System.out.println(reader.readLine());
 
             System.out.println("Enter number 2: ");
             String number2 = readerFromCommandLine.nextLine();
             writer.println(number2);
-            System.out.println(number2);
             System.out.println(reader.readLine());
 
             System.out.println("---");
@@ -55,8 +53,6 @@ public class SocketClient {
             System.out.println("Do you want to continue? (y/n): ");
             String response = readerFromCommandLine.nextLine();
             writer.println(response);
-            System.out.println(response);
-            System.out.println(response);
             if (response.equalsIgnoreCase("n")) {
                 break;
             }

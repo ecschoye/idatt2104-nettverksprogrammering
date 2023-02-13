@@ -29,6 +29,7 @@ public class WelcomeServer {
             writer.println("<li>"+ line + "</li>");
             line = reader.readLine();
         }
+        writer.println("<li>Wow</li>");
         writer.println("</ul>");
         writer.println("</body></html>");
 
