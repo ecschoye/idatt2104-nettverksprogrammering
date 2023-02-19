@@ -19,6 +19,10 @@ public class Client {
             String expression = readerFromCommandLine.nextLine();
             System.out.println("Expression: " + expression);
 
+            if (expression.equalsIgnoreCase("n")) {
+                break;
+            }
+
             String[] tokens = expression.split(" ");
             if (tokens.length != 3 || !tokens[0].matches("-?\\d+") || !tokens[2].matches("-?\\d+")) {
                 System.out.println("Invalid expression format. Please try again.");
@@ -29,9 +33,6 @@ public class Client {
             DatagramPacket sendingPacket = new DatagramPacket(buf, buf.length, address, 1250);
             socket.send(sendingPacket);
 
-            if (expression.equalsIgnoreCase("n")) {
-                break;
-            }
             buf = new byte[256];
             DatagramPacket receivingPacket = new DatagramPacket(buf, buf.length);
             socket.receive(receivingPacket);
