@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JavaSSLServer">
+    <output-path>$PROJECT_DIR$/out/artifacts/JavaSSLServer</output-path>
+    <root id="archive" name="oblig-p4-java.jar">
+      <element id="module-output" name="oblig-p4-java" />
+    </root>
+  </artifact>
+</component>
