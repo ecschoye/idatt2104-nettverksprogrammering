@@ -12,9 +12,10 @@ public class SocketClient {
         final int PORTNR = 1250;
 
         Scanner readerFromCommandLine = new Scanner(System.in);
-        System.out.print("Enter the name of the machine where the server program is running: ");
-        String serverMachine = readerFromCommandLine.nextLine();
+        //System.out.print("Enter the name of the machine where the server program is running: ");
+        //String serverMachine = readerFromCommandLine.nextLine();
 
+        String serverMachine = "192.168.0.182";
         Socket connection = new Socket(serverMachine, PORTNR);
         System.out.println("The connection is now established.");
 

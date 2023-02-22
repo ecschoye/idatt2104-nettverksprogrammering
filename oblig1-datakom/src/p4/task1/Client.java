@@ -8,7 +8,8 @@ public class Client {
     public static void main(String[] args) throws IOException {
         Scanner readerFromCommandLine = new Scanner(System.in);
         DatagramSocket socket = new DatagramSocket();
-        InetAddress address = InetAddress.getLocalHost();
+        //InetAddress address = InetAddress.getLocalHost();
+        InetAddress address = InetAddress.getByName("192.168.0.182");
         byte[] buf = null;
 
         while (true) {
