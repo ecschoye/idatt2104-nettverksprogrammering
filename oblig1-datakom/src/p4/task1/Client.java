@@ -1,4 +1,4 @@
-package task1;
+package p4.task1;
 
 import java.io.IOException;
 import java.net.*;
@@ -40,6 +40,7 @@ public class Client {
             System.out.println("Result: " + received + "\n");
 
         }
-        socket.close();C
+        socket.close();
     }
 }
+
