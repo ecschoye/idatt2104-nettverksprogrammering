@@ -40,6 +40,6 @@ public class Client {
             System.out.println("Result: " + received + "\n");
 
         }
-        socket.close();C
+        socket.close();
     }
 }
