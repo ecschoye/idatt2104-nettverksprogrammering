@@ -8,11 +8,21 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
+/**
+ * Service class for compiling Python code using Docker containers.
+ */
 @Service
 public class CompilerService {
 
     private static final Logger logger = Logger.getLogger(CompilerService.class.getName());
 
+    /**
+     * Compiles the specified Python code using a Docker container and returns the output.
+     *
+     * @param code the Python code to compile
+     * @return the output from compiling the code
+     * @throws IOException if an I/O error occurs
+     */
     public String compileCode(Code code) throws IOException {
         String pythonCode = code.getCode();
 
@@ -43,6 +53,4 @@ public class CompilerService {
         logger.info("Result: " + result);
         return result;
     }
-
-
 }
