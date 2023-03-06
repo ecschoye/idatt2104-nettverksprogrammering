@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P6 - Websocket</title>
+</head>
+<body>
+    <h1>P6 - Websocket</h1>
+    <label>Enter message:</label>
+    <input type="text" id="message" /> <br />
+
+    <button id="send" onclick="return onClickSubmit();">Send</button>
+    
+    <div id="messages"></div>
+</body>
+
+<script>
+    const ws = new WebSocket("ws://localhost:3000");
+
+    ws.addEventListener("open", function(event) {
+        console.log("Client: Connection opened successfully! ");
+        ws.send("Hello from client!"); 
+    });
+
+    ws.addEventListener("message", function(event) {
+        console.log("Client: Message received from server: ", event.data);
+        var messages = document.getElementById("messages");
+        messages.innerHTML += event.data + "<br />";
+    });
+
+    ws.addEventListener("close", function(event) {
+        console.log("Client: Connection closed successfully! ");
+    });
+
+    ws.onerror = function(event) {
+        if (event.code == 1006) {
+            console.log("Client: Connection closed abnormally!");
+        }
+        console.log("Client: Error occured: ", event);
+    };
+
+    function onClickSubmit() {
+        var message = document.getElementById("message").value;
+        ws.send(message);
+        return false;
+    }
+</script>
+</html>
