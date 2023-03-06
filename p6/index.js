@@ -6,7 +6,7 @@ const GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
 // Simple HTTP server responds with a simple WebSocket client test
 const httpServer = net.createServer((connection) => {
-  connection.on('data', () => {
+  connection.on('data', (data) => {
     let content = `<!DOCTYPE html>
 <html>
   <head>
@@ -17,7 +17,7 @@ const httpServer = net.createServer((connection) => {
     <script>
       let ws = new WebSocket('ws://localhost:3001');
       ws.onmessage = event => document.getElementById('messages').innerHTML += event.data + '<br />';
-      const message = () => ws.send(document.getElementById('message').value);
+      const message = () => {ws.send(document.getElementById('message').value)};
     </script>
 
     <h1>WebSocket server</h1>
@@ -65,6 +65,7 @@ const wsServer = net.createServer((connection) => {
         console.log('Client sent non-handshake request');
         let decoded = parseWebSocketMessage(data);
         console.log('Decoded message: ', decoded);
+        broadcastWebSocketMessage(decoded);
       }
   });
 
@@ -107,3 +108,18 @@ function parseWebSocketMessage(data) {
     return decoded;
   }
   
+  function broadcastWebSocketMessage(message) {
+    const payload = encodeWebSocketMessage(message);
+    clients.forEach((c) => {
+      c.write(payload);
+    });
+  }
+
+  function encodeWebSocketMessage(message) {
+    const payload = Buffer.from(message);
+    const payloadLength = payload.length;
+    const header = Buffer.alloc(2);
+    header.writeUInt8(0b10000001, 0);
+    header.writeUInt8(payloadLength, 1);
+    return Buffer.concat([header, payload]);
+  }
