@@ -1,7 +1,7 @@
 const net = require('net');
 const crypto = require('crypto');
 
-const fixedString = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+const GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 // Attempt to implement a WebSocket server using the net module if Java version does not work out
 
 // Simple HTTP server responds with a simple WebSocket client test
@@ -39,7 +39,7 @@ httpServer.listen(3000, () => {
 });
 
 const wsAcceptKey = (key) => { 
-    crypto.createHash('sha1').update(key + fixedString).digest('base64');
+    return crypto.createHash('sha1').update(key + GUID).digest('base64');
 }
 
 // Incomplete WebSocket server
@@ -51,11 +51,11 @@ const wsServer = net.createServer((connection) => {
 
   connection.on('data', (data) => {
     console.log('Data received from client: ', data.toString());
-    if (isWebSocketHandshakeRequest(message)) {
-        var key = getKey(data);
-        var acceptKey = wsAcceptKey(key);
+    if (isWebSocketHandshakeRequest(data.toString())) {
+        var key = getWSKey(data);
+        var hsAcceptKey = wsAcceptKey(key);
 
-        const responds = `HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: ${acceptKey}\r\n\r\n`;
+        const responds = `HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: ${hsAcceptKey}\r\n\r\n`;
 
         connection.write(responds);
         clients.push(connection);
@@ -63,6 +63,8 @@ const wsServer = net.createServer((connection) => {
 
       } else {
         console.log('Client sent non-handshake request');
+        let decoded = parseWebSocketMessage(data);
+        console.log('Decoded message: ', decoded);
       }
   });
 
@@ -79,6 +81,7 @@ wsServer.listen(3001, () => {
 });
 
 function isWebSocketHandshakeRequest(message) {
+    console.log('Message: ', message)
     const lines = message.split('\r\n');
     if (lines[0].startsWith('GET ') &&
         lines.some((line) => line.startsWith('Upgrade: websocket')) &&
@@ -89,6 +92,18 @@ function isWebSocketHandshakeRequest(message) {
     return false;
 }
 
-function getKey(data) {
+function getWSKey(data) {
     return data.toString().match(/Sec-WebSocket-Key: (.*)/)[1];
 }
+
+function parseWebSocketMessage(data) {
+    let payloadLength = data[1] & 127;
+    let mask = data.slice(2, 6);
+    let payload = data.slice(6, 6 + payloadLength);
+    let decoded = '';
+    for (let i = 0; i < payload.length; i++) {
+      decoded += String.fromCharCode(payload[i] ^ mask[i % 4]);
+    }
+    return decoded;
+  }
+  
