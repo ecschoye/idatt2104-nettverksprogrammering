@@ -12,19 +12,45 @@ const httpServer = net.createServer((connection) => {
   <head>
     <meta charset="UTF-8" />
   </head>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .info {
+      width: 500px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    #send {
+      margin-top: 10px;
+      width: 100px;
+      height: 30px;
+    }
+    #messages {
+      width: 500px;
+      height: 300px;
+      border: 1px solid black;
+      overflow: auto;
+      margin: 0 auto;
+      padding-left: 10px;
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+  </style>
   <body>
-    WebSocket test page
     <script>
       let ws = new WebSocket('ws://localhost:3001');
       ws.onmessage = event => document.getElementById('messages').innerHTML += event.data + '<br />';
       const message = () => {ws.send(document.getElementById('message').value)};
     </script>
 
-    <h1>WebSocket server</h1>
-    <p>WebSocket server is not implemented yet.</p>
-    <label for="message">Message to send:</label><br />
-    <input type="text" id="message" /><br />
-    <button id="send" onclick="return message();">Send</button><br />
+    <div class="info">
+      <h1>WebSocket server</h1>
+      <p>WebSocket server is not implemented yet.</p>
+      <label for="message">Message to send:</label><br />
+      <input type="text" id="message" /><br />
+      <button id="send" onclick="return message();">Send</button><br />
+    </div>
     <div id="messages"></div>
 
   </body>
@@ -98,14 +124,11 @@ function getWSKey(data) {
 }
 
 function parseWebSocketMessage(data) {
-    let payloadLength = data[1] & 127;
-    let mask = data.slice(2, 6);
-    let payload = data.slice(6, 6 + payloadLength);
-    let decoded = '';
-    for (let i = 0; i < payload.length; i++) {
-      decoded += String.fromCharCode(payload[i] ^ mask[i % 4]);
-    }
-    return decoded;
+  const payloadLength = data[1] & 127;
+  const mask = data.slice(2, 6);
+  const payload = data.slice(6, 6 + payloadLength);
+  const decoded = new TextDecoder('utf-8').decode(payload.map((byte, i) => byte ^ mask[i % 4]));
+  return decoded;
   }
   
   function broadcastWebSocketMessage(message) {
@@ -116,7 +139,8 @@ function parseWebSocketMessage(data) {
   }
 
   function encodeWebSocketMessage(message) {
-    const payload = Buffer.from(message);
+    const encoder = new TextEncoder();
+    const payload = encoder.encode(message);
     const payloadLength = payload.length;
     const header = Buffer.alloc(2);
     header.writeUInt8(0b10000001, 0);
