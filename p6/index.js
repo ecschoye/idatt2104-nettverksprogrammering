@@ -40,8 +40,13 @@ const httpServer = net.createServer((connection) => {
   <body>
     <script>
       let ws = new WebSocket('ws://localhost:3001');
+      ws.onopen = event => ws.send('Client connected');
       ws.onmessage = event => document.getElementById('messages').innerHTML += event.data + '<br />';
       const message = () => {ws.send(document.getElementById('message').value)};
+      window.onbeforeunload = () => {
+        ws.send('Client disconnected');
+        ws.close();
+      };      
     </script>
 
     <div class="info">
